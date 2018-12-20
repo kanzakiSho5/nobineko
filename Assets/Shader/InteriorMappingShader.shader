@@ -3,6 +3,7 @@
 // Adapted to Unity from http://www.humus.name/index.php?page=3D&ID=80
 Shader "Custom/InteriorMapping - Cubemap"
 {
+
     Properties
     {
         _RoomCube ("Room Cube Map", Cube) = "white" {}

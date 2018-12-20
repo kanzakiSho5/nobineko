@@ -24,11 +24,6 @@ public class GameManager : MonoBehaviour {
     public float MinVerTical {get; protected set;}
     public int StartCountDownNum {get; protected set;}
 
-
-	// Use this for initialization
-	void Start () {
-    }
-
     void OnEnable()
     {
         init();

@@ -25,7 +25,9 @@ public class GameManagerSettings : MonoBehaviour {
         GameObject Manager = GameObject.FindWithTag("GameManager");
         if (Manager == null) {
             Manager = Instantiate(new GameObject());
+            Manager.tag = "GameManager";
             Manager.AddComponent<GameManager>();
         }
+        GameManager.instance.Init();
     }
 }

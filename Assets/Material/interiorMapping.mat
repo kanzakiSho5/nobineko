@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: interiorMapping
-  m_Shader: {fileID: 4800000, guid: 517850169ce01fe4fb7af3f1b520fa79, type: 3}
+  m_Shader: {fileID: 4800000, guid: 25e10d75f3bca4200ac6565ada4f63cc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,11 +39,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FrameTex:
-        m_Texture: {fileID: 2800000, guid: bd4c1248991e21740be297a70da441ff, type: 3}
+        m_Texture: {fileID: 2800000, guid: cbcad234f087747f0b58fd2a90937040, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlassTex:
-        m_Texture: {fileID: 2800000, guid: 4f80f5bee2efa49b8908c27935e92f45, type: 3}
+        m_Texture: {fileID: 2800000, guid: 137450b8a2dd54dbea109c325c127999, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoomCube:
-        m_Texture: {fileID: 8900000, guid: 9fb5b05dbd953674a9d565c4a187af5a, type: 3}
+        m_Texture: {fileID: 8900000, guid: 3b63b0c0e0e7a42f981436998b40c8a8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowTex:
@@ -75,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BrendDistance: 0.68
+    - _BrendDistance: 0.24
     - _BumpScale: 1
     - _Ck: 1
     - _Cutoff: 0.5
@@ -90,7 +90,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Smoothness: 1
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
