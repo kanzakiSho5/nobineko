@@ -17,13 +17,14 @@ public class GameManager : MonoBehaviour {
     private GameManagerSettings settings;
     private int currentTime;
     private float gameStartTime;
-    private bool isStarted;
 
-    public int LifeTime { get; protected set;}
-    public float Score { get; protected set;}
-    public float MaxVertical {get; protected set;}
-    public float MinVerTical {get; protected set;}
-    public int StartCountDownNum {get; protected set;}
+    public bool isStarted       { get; protected set; }
+    public int LifeTime         { get; protected set; }
+    public float Score          { get; protected set; }
+    public float MaxVertical    { get; protected set; }
+    public float MinVerTical    { get; protected set; }
+    public int StartCountDownNum{ get; protected set; }
+    public float currentTIme    { get; protected set; }
 
     void OnEnable()
     {
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour {
             }
         }
 	}
+
 
     void UpdateTime()
     {
