@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour {
 
 
@@ -16,13 +17,14 @@ public class GameManager : MonoBehaviour {
     private GameManagerSettings settings;
     private int currentTime;
     private float gameStartTime;
-    private bool isStarted;
 
-    public int LifeTime { get; protected set;}
-    public float Score { get; protected set;}
-    public float MaxVertical {get; protected set;}
-    public float MinVerTical {get; protected set;}
-    public int StartCountDownNum {get; protected set;}
+    public bool isStarted       { get; protected set; }
+    public int LifeTime         { get; protected set; }
+    public float Score          { get; protected set; }
+    public float MaxVertical    { get; protected set; }
+    public float MinVerTical    { get; protected set; }
+    public int StartCountDownNum{ get; protected set; }
+    public float currentTIme    { get; protected set; }
 
     void OnEnable()
     {
@@ -33,7 +35,6 @@ public class GameManager : MonoBehaviour {
         MinVerTical = -HorizontalDistance;
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-        StartCoroutine(StartCountDown());
     }
 
     void init()
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour {
         gameStartTime       = Time.time;
         isStarted           = false;
         DontDestroyOnLoad(this.gameObject);
+        StartCoroutine(StartCountDown());
     }
 
 	// Update is called once per frame
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour {
             }
         }
 	}
+
 
     void UpdateTime()
     {
