@@ -21,6 +21,7 @@ public class WorldItemCreater : MonoBehaviour {
         ItemPearentObj = new GameObject();
         ItemPearentObj.name = "ItemPearent";
         ItemPearentObj.transform.parent = transform;
+        ItemPearentObj.transform.localPosition = Vector3.zero;
 
         BoostPearent = new GameObject();
         BoostPearent.name = "BoostItem";
@@ -31,13 +32,13 @@ public class WorldItemCreater : MonoBehaviour {
         DamagePearent.transform.parent = ItemPearentObj.transform;
     }
 
-    void createBoostObj(int hight)
+    void createBoostObj(float hight)
     {
         GameObject item = Instantiate((GameObject)Resources.Load("Prefab/BoostItem"), BoostPearent.transform);
         item.transform.position = new Vector3(Random.Range(-10,10),hight + 10,0);
     }
 
-    void createDamageObj(int hight)
+    void createDamageObj(float hight)
     {
         GameObject item         = Instantiate((GameObject)Resources.Load("Prefab/DamageItem"), DamagePearent.transform);
         int rand                = Random.Range(0, 2);
@@ -60,7 +61,7 @@ public class WorldItemCreater : MonoBehaviour {
             if (Time.time >= DamageItemCount * 3)
             {
                 DamageItemCount++;
-                createDamageObj(Mathf.FloorToInt(GameManager.instance.Score));
+                createDamageObj(Mathf.FloorToInt(GameManager.instance.Score + 5f));
             }
 
             if (BoostPearent.transform.childCount > 5)

@@ -1,27 +1,33 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterSelectManager : MonoBehaviour {
-	[SerializeField]
+	
+    [SerializeField]
 	private Transform Content;
-	private int CharacterCount = 10;
+    [SerializeField]
+    private Texture[] CharactersMat;
 
-	// Use this for initialization
-	void Start () {
+    public static Texture CharacterMat;
+
+	void Awake () {
 		init();
 	}
 
-	// Update is called once per frame
-	void Update () {
-
-	}
 
 	void init()
 	{
-		for(int i = 0; i < CharacterCount; i++)
+        for(int i = 0; i < CharactersMat.Length; i++)
 		{
-			Instantiate(Resources.Load<GameObject>("Prefab/CharaSelectButton"), Content);
+            GameObject obj = Instantiate(Resources.Load<GameObject>("Prefab/CharaSelectButton"), Content);
+            obj.GetComponent<CharacterSelectButton>().CharactorNum = i;
 		}
+        ChangeCharactorByIndex(0);
 	}
+
+    public void ChangeCharactorByIndex(int index)
+    {
+        CharacterMat = CharactersMat[index];
+    }
 }
