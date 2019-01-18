@@ -20,7 +20,6 @@ public class DamagedItemScript : MonoBehaviour {
     {
         //trueなら1、falseなら-1
         MoveDir = Convert.ToInt32(isRightMove) * 2 - 1;
-        Debug.Log(isRightMove);
         transform.eulerAngles = new Vector3(0.0f, 90f * MoveDir, 0.0f);
     }
 
@@ -29,4 +28,13 @@ public class DamagedItemScript : MonoBehaviour {
         transform.position += new Vector3 (MoveSpeed * MoveDir, 0.0f, 0.0f) * 0.1f;
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.tag == "Player")
+        {
+            Debug.Log("Damaged");
+            GameManager.instance.OnPlayerDamaged();
+
+        }
+    }
 }
