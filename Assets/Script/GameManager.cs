@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
 
     UIManager UIMan;
@@ -18,13 +19,14 @@ public class GameManager : MonoBehaviour {
     private int currentTime;
     private float gameStartTime;
 
-    public bool isStarted       { get; protected set; }
-    public int LifeTime         { get; protected set; }
-    public float Score          { get; protected set; }
-    public float MaxVertical    { get; protected set; }
-    public float MinVerTical    { get; protected set; }
-    public int StartCountDownNum{ get; protected set; }
-    public float currentTIme    { get; protected set; }
+    public bool isStarted { get; protected set; }
+    public int LifeTime { get; protected set; }
+    public float Score { get; protected set; }
+    public float MaxVertical { get; protected set; }
+    public float MinVerTical { get; protected set; }
+    public int StartCountDownNum { get; protected set; }
+    public float currentTIme { get; protected set; }
+    public Texture CharacterMat { get; protected set; }
 
     void OnEnable()
     {
@@ -40,15 +42,16 @@ public class GameManager : MonoBehaviour {
     void init()
     {
         Debug.Log("GameManager init");
-        if(instance == null)
+        if (instance == null)
         {
-            instance        = this.gameObject.GetComponent<GameManager>();
+            instance = this.gameObject.GetComponent<GameManager>();
         }
         settings            = GameManagerSettings.instance;
         UIMan               = settings.UIManager;
         playerGameObj       = settings.PlayerGameObject;
         playerMove          = settings.PlayerGameObject.GetComponent<PlayerMove>();
         HorizontalDistance  = settings.HorizontalDistance;
+        CharacterMat        = CharacterSelectManager.CharacterMat;
         Score               = 0;
         StartCountDownNum   = 3;
         currentTime         = 0;
@@ -57,10 +60,13 @@ public class GameManager : MonoBehaviour {
         isStarted           = false;
         DontDestroyOnLoad(this.gameObject);
         StartCoroutine(StartCountDown());
+
+        PlayerManager.Instance.ChengePlayerMat();
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
 
         if (SceneManager.GetActiveScene().name == "MainGameScene")
         {
@@ -76,8 +82,7 @@ public class GameManager : MonoBehaviour {
                 StartCoroutine(OnEndGame());
             }
         }
-	}
-
+    }
 
     void UpdateTime()
     {
@@ -93,26 +98,42 @@ public class GameManager : MonoBehaviour {
         GameObject.FindWithTag("StartCanvas").GetComponent<StartSceneUIManager>().OnEnableResult();
     }
 
-  IEnumerator StartCountDown()
-  {
-    for(int i = 3; i > 0; i--)
+    IEnumerator StartCountDown()
     {
-      yield return new WaitForSeconds(1.0f);
-      StartCountDownNum--;
+        for (int i = 3; i > 0; i--)
+        {
+            yield return new WaitForSeconds(1.0f);
+            StartCountDownNum--;
+        }
+        isStarted = true;
+        gameStartTime = Time.time;
+        currentTime = Mathf.FloorToInt(Time.time);
+        playerMove.SetIsCanMove(true);
     }
-    isStarted = true;
-    gameStartTime = Time.time;
-    currentTime = Mathf.FloorToInt(Time.time);
-    playerMove.SetIsCanMove(true);
-  }
 
-  void OnDisable()
-  {
-    instance = null;
-  }
+    void OnDisable()
+    {
+        instance = null;
+    }
 
+    #region public Method
+
+    /// <summary>
+    /// GameManagerの初期化。
+    /// </summary>
     public void Init()
     {
         init();
     }
+
+    /// <summary>
+    /// LifeTimeが減る
+    /// </summary>
+    public void OnPlayerDamaged()
+    {
+        LifeTime -= 2;
+        StartCoroutine(PlayerManager.Instance.DamagedAnimCoroutine());
+    }
+    #endregion
+
 }
