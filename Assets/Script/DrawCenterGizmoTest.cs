@@ -25,6 +25,7 @@ public class DrawCenterGizmoTest : MonoBehaviour {
     {
         meshFilter = gameObject.GetComponent<MeshFilter>();
         renderer = gameObject.GetComponent<MeshRenderer>();
+        renderer.material.mainTexture = GameManager.instance.CharacterMat;
         PlayerBodyCenterPos.Add(Vector3.down);
         PlayerBodyMeshPos.Add(Vector3.right * BodyWidth);
         PlayerBodyMeshPos.Add(Vector3.left * BodyWidth);
@@ -96,7 +97,7 @@ public class DrawCenterGizmoTest : MonoBehaviour {
         int verQuantity = PlayerBodyCenterPos.Count;
         
         Vector3[] vertices = new Vector3[verQuantity * 2];
-        Vector2[] uvs = new Vector2[verQuantity * 4];
+        Vector2[] uvs = new Vector2[verQuantity * 2];
 
 
         //四角形２つは三角形３つ
@@ -108,11 +109,16 @@ public class DrawCenterGizmoTest : MonoBehaviour {
             vertices[i * 2 + 0] = PlayerBodyMeshPos[i * 2 + 0] - transform.position;
             vertices[i * 2 + 1] = PlayerBodyMeshPos[i * 2 + 1] - transform.position;
 
-
-            uvs[i * 4 + 0] = Vector2.zero;
-            uvs[i * 4 + 1] = Vector2.right;
-            uvs[i * 4 + 2] = Vector2.left + Vector2.one;
-            uvs[i * 4 + 3] = Vector2.one;
+            if((i % 2) == 0)
+            {
+                uvs[i * 2 + 0] = new Vector2(300f / 1024f, 300f / 1024f);
+                uvs[i * 2 + 1] = new Vector2(550f / 1024f, 300f / 1024f);
+            }
+            else
+            {
+                uvs[i * 2 + 0] = new Vector2(300f / 1024f, 250f / 1024f);
+                uvs[i * 2 + 1] = new Vector2(550f / 1024f, 250f / 1024f);
+            }
         }
 
         int positionIndex = 0;
@@ -129,8 +135,8 @@ public class DrawCenterGizmoTest : MonoBehaviour {
         }
 
         mesh.vertices = vertices;
-        //mesh.uv = uvs;
-        //mesh.uv2 = uvs;
+        mesh.uv = uvs;
+        mesh.uv2 = uvs;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
 
