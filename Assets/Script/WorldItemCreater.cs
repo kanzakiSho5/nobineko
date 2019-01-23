@@ -11,13 +11,20 @@ public class WorldItemCreater : MonoBehaviour {
     int BoostItemCount;
     int DamageItemCount;
 
-	// Use this for initialization
-	void Start () {
+    public bool isCanCreate; 
+
+    public static WorldItemCreater instance;
+
+    private void Awake()
+    {
         init();
-	}
+    }
+
 
     void init()
     {
+        if (instance == null)
+            instance = this.GetComponent<WorldItemCreater>();
         ItemPearentObj = new GameObject();
         ItemPearentObj.name = "ItemPearent";
         ItemPearentObj.transform.parent = transform;
@@ -30,6 +37,8 @@ public class WorldItemCreater : MonoBehaviour {
         DamagePearent = new GameObject();
         DamagePearent.name = "DamageItem";
         DamagePearent.transform.parent = ItemPearentObj.transform;
+
+        isCanCreate = false;
     }
 
     void createBoostObj(float hight)
@@ -50,7 +59,7 @@ public class WorldItemCreater : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if(GameManager.instance.isStarted)
+        if(GameManager.instance.isStarted && isCanCreate)
         {
             if (Time.time >= BoostItemCount * 2)
             {
@@ -74,5 +83,14 @@ public class WorldItemCreater : MonoBehaviour {
                 Destroy(DamagePearent.transform.GetChild(0).gameObject);
             }
         }
+        else
+        {
+            BoostItemCount = DamageItemCount = Mathf.FloorToInt(Time.time);
+        }
 	}
+
+    private void OnDisable()
+    {
+        instance = null;
+    }
 }

@@ -109,6 +109,8 @@ public class GameManager : MonoBehaviour
         gameStartTime = Time.time;
         currentTime = Mathf.FloorToInt(Time.time);
         playerMove.SetIsCanMove(true);
+        WorldItemCreater.instance.isCanCreate = true;
+
     }
 
     void OnDisable()
