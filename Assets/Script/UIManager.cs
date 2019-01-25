@@ -14,6 +14,10 @@ public class UIManager : MonoBehaviour
     Text FPSText;
     [SerializeField]
     GameObject StartCountDownPanel;
+    [SerializeField]
+    Button BoostButton;
+    [SerializeField]
+    Text BoostItemText;
 
     int currentTime = 0;
 
@@ -28,23 +32,42 @@ public class UIManager : MonoBehaviour
         StartCountDownPanel.SetActive(true);
     }
 
-    UIUpdate(Mathf.FloorToInt(GameManager.instance.Score));
-    int CountDownNum = GameManager.instance.StartCountDownNum;
-
-    if(CountDownNum > 0)
     // Update is called once per frame
     void Update()
     {
-      StartCountDownPanel.GetComponentInChildren<Text>().text = CountDownNum.ToString();
-      currentTime = 3;
+        UIUpdate(Mathf.FloorToInt(GameManager.instance.Score));
+        int CountDownNum = GameManager.instance.StartCountDownNum;
+
+        if (CountDownNum > 0)
+        {
+            StartCountDownPanel.GetComponentInChildren<Text>().text = CountDownNum.ToString();
+            currentTime = 3;
+        }
+        else
+        {
+            StartCountDownPanel.SetActive(false);
+        }
+
+        TimeText.text = GameManager.instance.LifeTime.ToString();
+
+
+        if (PlayerMove.instance.GetIsBoosting() && !BoostButton.interactable)
+        {
+            BoostButton.interactable = true;
+            OnChengeBoostItemText("0");
+        }
+
+        if (GameManager.instance.BoostItemCount <= 0)
+            BoostButton.interactable = false;
+        else
+            BoostButton.interactable = true;
+            
     }
-    else
     private void DebugUpdate()
     {
-      StartCountDownPanel.SetActive(false);
+        FPSText.text = Mathf.Floor(1 / Time.deltaTime).ToString();
     }
 
-    TimeText.text = GameManager.instance.LifeTime.ToString();
 
     DebugUpdate();
 	}
@@ -53,6 +76,16 @@ public class UIManager : MonoBehaviour
   {
     FPSText.text = Mathf.Floor(1 / Time.deltaTime).ToString();
   }
+    public void OnChengeBoostItemText(string value)
+    {
+        BoostItemText.text = value;
+    }
+
+    public void OnBoostButton()
+    {
+        BoostButton.interactable = false;
+        PlayerMove.instance.startPlayerBoost(GameManager.instance.BoostItemCount);
+    }
 
 
   public void UIUpdate(int Score)
