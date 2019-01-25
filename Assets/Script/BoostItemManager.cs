@@ -9,7 +9,7 @@ public class BoostItemManager : MonoBehaviour {
     {
         if(col.tag == "Player")
         {
-            col.GetComponent<PlayerMove>().startPlayerboost();
+            GameManager.instance.OnGetBoostItem();
             Destroy(gameObject);
         }
     }
