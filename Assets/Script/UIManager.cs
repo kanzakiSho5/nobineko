@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text BoostItemText;
 
+    [SerializeField]
+    bool isDebugMode;
+
     int currentTime = 0;
 
     // Use this for initialization
@@ -30,6 +33,7 @@ public class UIManager : MonoBehaviour
     void init()
     {
         StartCountDownPanel.SetActive(true);
+        FPSText.transform.parent.gameObject.SetActive(isDebugMode);
     }
 
     // Update is called once per frame
@@ -50,6 +54,8 @@ public class UIManager : MonoBehaviour
 
         TimeText.text = GameManager.instance.LifeTime.ToString();
 
+        if(!isDebugMode)
+            DebugUpdate();
 
         if (PlayerMove.instance.GetIsBoosting() && !BoostButton.interactable)
         {
@@ -69,13 +75,11 @@ public class UIManager : MonoBehaviour
     }
 
 
-    DebugUpdate();
-	}
+    public void UIUpdate(int Score)
+    {
+        ScoreText.text = Score + " m!";
+    }
 
-  private void DebugUpdate()
-  {
-    FPSText.text = Mathf.Floor(1 / Time.deltaTime).ToString();
-  }
     public void OnChengeBoostItemText(string value)
     {
         BoostItemText.text = value;
@@ -88,8 +92,4 @@ public class UIManager : MonoBehaviour
     }
 
 
-  public void UIUpdate(int Score)
-  {
-      ScoreText.text = Score + " m!";
-  }
 }
