@@ -8,13 +8,7 @@ public class CameraManager : MonoBehaviour {
     GameObject Player;
     [SerializeField]
     float CameraDistance = 10.0f;
-    
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		if(Player != null)

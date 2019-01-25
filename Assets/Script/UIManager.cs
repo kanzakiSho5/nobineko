@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
     [SerializeField]
     Text ScoreText;
@@ -16,28 +17,29 @@ public class UIManager : MonoBehaviour {
 
     int currentTime = 0;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         init();
-	}
+    }
 
     void init()
     {
         StartCountDownPanel.SetActive(true);
     }
 
-	// Update is called once per frame
-	void Update () {
     UIUpdate(Mathf.FloorToInt(GameManager.instance.Score));
     int CountDownNum = GameManager.instance.StartCountDownNum;
 
     if(CountDownNum > 0)
+    // Update is called once per frame
+    void Update()
     {
       StartCountDownPanel.GetComponentInChildren<Text>().text = CountDownNum.ToString();
       currentTime = 3;
     }
     else
+    private void DebugUpdate()
     {
       StartCountDownPanel.SetActive(false);
     }

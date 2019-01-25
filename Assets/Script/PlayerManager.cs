@@ -43,7 +43,6 @@ public class PlayerManager : MonoBehaviour {
         Color currentColor = HeadObj.GetComponent<MeshRenderer>().material.color;
         for (int i = 0; i < 6;i++)
         {
-            Debug.Log(isHide);
             Color color = new Color(currentColor.r, currentColor.g, currentColor.b, isHide);
             HeadObj.GetComponent<MeshRenderer>().material.color = color;
             eyeL.GetComponent<MeshRenderer>().material.color = color;
