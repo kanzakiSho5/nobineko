@@ -11,13 +11,22 @@ public class WorldItemCreater : MonoBehaviour {
     int BoostItemCount;
     int DamageItemCount;
 
-	// Use this for initialization
-	void Start () {
+    //[System.NonSerialized]
+    public bool isCanCreate;
+
+    public static WorldItemCreater instance;
+
+    private void Awake()
+    {
         init();
-	}
+    }
+
 
     void init()
     {
+        if (instance == null)
+            instance = this.GetComponent<WorldItemCreater>();
+        
         ItemPearentObj = new GameObject();
         ItemPearentObj.name = "ItemPearent";
         ItemPearentObj.transform.parent = transform;
@@ -30,6 +39,10 @@ public class WorldItemCreater : MonoBehaviour {
         DamagePearent = new GameObject();
         DamagePearent.name = "DamageItem";
         DamagePearent.transform.parent = ItemPearentObj.transform;
+
+        BoostItemCount = 0;
+        DamageItemCount = 0;
+        isCanCreate = false;
     }
 
     void createBoostObj(float hight)
@@ -48,31 +61,43 @@ public class WorldItemCreater : MonoBehaviour {
         item.GetComponent<DamagedItemScript>().Init();
     }
 
-	// Update is called once per frame
 	void Update () {
-        if(GameManager.instance.isStarted)
+        if(GameManager.instance.isStarted && isCanCreate)
         {
-            if (Time.time >= BoostItemCount * 2)
+            BoostPearent.SetActive(false);
+            DamagePearent.SetActive(false);
+            if (!PlayerMove.instance.GetIsBoosting())
             {
-                BoostItemCount++;
-                createBoostObj(Mathf.FloorToInt(GameManager.instance.Score));
-            }
+                BoostPearent.SetActive(true);
+                DamagePearent.SetActive(true);
 
-            if (Time.time >= DamageItemCount * 3)
-            {
-                DamageItemCount++;
-                createDamageObj(Mathf.FloorToInt(GameManager.instance.Score + 5f));
-            }
+                if (Time.timeSinceLevelLoad >= BoostItemCount * 2)
+                {
+                    BoostItemCount++;
+                    createBoostObj(Mathf.FloorToInt(GameManager.instance.Score));
+                }
 
-            if (BoostPearent.transform.childCount > 5)
-            {
-                Destroy(BoostPearent.transform.GetChild(0).gameObject);
-            }
+                if (Time.timeSinceLevelLoad >= DamageItemCount * 3)
+                {
+                    DamageItemCount++;
+                    createDamageObj(Mathf.FloorToInt(GameManager.instance.Score + 5f));
+                }
 
-            if (DamagePearent.transform.childCount > 5)
-            {
-                Destroy(DamagePearent.transform.GetChild(0).gameObject);
+                if (BoostPearent.transform.childCount > 5)
+                {
+                    Destroy(BoostPearent.transform.GetChild(0).gameObject);
+                }
+
+                if (DamagePearent.transform.childCount > 5)
+                {
+                    Destroy(DamagePearent.transform.GetChild(0).gameObject);
+                }
             }
         }
 	}
+
+    private void OnDisable()
+    {
+        instance = null;
+    }
 }

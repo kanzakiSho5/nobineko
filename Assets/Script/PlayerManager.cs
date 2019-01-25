@@ -30,7 +30,6 @@ public class PlayerManager : MonoBehaviour {
 
     public void ChengePlayerMat()
     {
-        Debug.Log(GameManager.instance.CharacterMat);
         HeadObj.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", GameManager.instance.CharacterMat);
         BottomObj.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", GameManager.instance.CharacterMat);
         eyeL.GetComponent<MeshRenderer>().material.SetTexture("_MainTex", GameManager.instance.CharacterMat);
@@ -43,7 +42,8 @@ public class PlayerManager : MonoBehaviour {
         Color currentColor = HeadObj.GetComponent<MeshRenderer>().material.color;
         for (int i = 0; i < 6;i++)
         {
-            Debug.Log(isHide);
+            if (GameManager.instance.LifeTime <= 0)
+                break;
             Color color = new Color(currentColor.r, currentColor.g, currentColor.b, isHide);
             HeadObj.GetComponent<MeshRenderer>().material.color = color;
             eyeL.GetComponent<MeshRenderer>().material.color = color;
@@ -53,5 +53,6 @@ public class PlayerManager : MonoBehaviour {
             isHide %= 2;
             yield return new WaitForSeconds(.2f);
         }
+        GameManager.instance.OnEndDamageAnim();
     }
 }

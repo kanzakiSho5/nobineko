@@ -10,6 +10,6 @@ public class ResultManager : MonoBehaviour {
 
     private void OnEnable()
     {
-        ScoreText.text = GameManager.instance.Score + " m!";
+        ScoreText.text = (Mathf.Floor(GameManager.instance.Score * 10) / 10f) + " m!";
     }
 }

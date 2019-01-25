@@ -32,7 +32,6 @@ public class DamagedItemScript : MonoBehaviour {
     {
         if(col.tag == "Player")
         {
-            Debug.Log("Damaged");
             GameManager.instance.OnPlayerDamaged();
 
         }

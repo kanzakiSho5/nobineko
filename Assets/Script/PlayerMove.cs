@@ -19,6 +19,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     float MoveSpeed = .1f;
 
+    public static PlayerMove instance;
+
     // Use this for initialization
     void Start()
     {
@@ -43,6 +45,8 @@ public class PlayerMove : MonoBehaviour
 
     private void init()
     {
+        if (instance == null)
+            instance = this.GetComponent<PlayerMove>();
         handObj = transform.GetChild(0).gameObject;
         headObj = transform.GetChild(1).gameObject;
         gyro = Input.gyro;
@@ -94,14 +98,15 @@ public class PlayerMove : MonoBehaviour
 
     }
 
-    public void startPlayerboost()
+    public void startPlayerBoost(int boostItemvalue)
     {
         if (!isInvincible)
         {
             isCanControll = false;
             isBoosting = true;
             isInvincible = true;
-            StartCoroutine(endBoostTimeCoroutine(1.5f));
+            StartCoroutine(endBoostTimeCoroutine(1.5f * boostItemvalue));
+
         }
     }
 
@@ -110,11 +115,17 @@ public class PlayerMove : MonoBehaviour
         isCanControll = true;
         isBoosting = false;
         isInvincible = false;
+        GameManager.instance.DestroyBoostItem();
     }
 
     public void SetIsCanMove(bool SetValue)
     {
         isCanMove = SetValue;
+    }
+
+    public bool GetIsBoosting()
+    {
+        return isBoosting;
     }
 
     IEnumerator endBoostTimeCoroutine(float time)

@@ -17,16 +17,20 @@ public class GameManager : MonoBehaviour
     private PlayerMove playerMove;
     private GameManagerSettings settings;
     private int currentTime;
-    private float gameStartTime;
+    private bool isAddTime;
+    private bool isDamaged;
+    private AudioClip BGMcrip;
+    private AudioSource BGMSource;
 
-    public bool isStarted { get; protected set; }
-    public int LifeTime { get; protected set; }
-    public float Score { get; protected set; }
-    public float MaxVertical { get; protected set; }
-    public float MinVerTical { get; protected set; }
+    public bool isStarted        { get; protected set; }
+    public int LifeTime          { get; protected set; }
+    public int BoostItemCount    { get; protected set; }
     public int StartCountDownNum { get; protected set; }
-    public float currentTIme { get; protected set; }
-    public Texture CharacterMat { get; protected set; }
+    public float Score           { get; protected set; }
+    public float MaxVertical     { get; protected set; }
+    public float MinVerTical     { get; protected set; }
+    public float currentTIme     { get; protected set; }
+    public Texture CharacterMat  { get; protected set; }
 
     void OnEnable()
     {
@@ -41,7 +45,6 @@ public class GameManager : MonoBehaviour
 
     void init()
     {
-        Debug.Log("GameManager init");
         if (instance == null)
         {
             instance = this.gameObject.GetComponent<GameManager>();
@@ -56,8 +59,12 @@ public class GameManager : MonoBehaviour
         StartCountDownNum   = 3;
         currentTime         = 0;
         LifeTime            = 20;
-        gameStartTime       = Time.time;
         isStarted           = false;
+        isAddTime           = false;
+        BGMcrip             = (AudioClip) Resources.Load("music/omochanokuninomarch");
+        BGMSource           = Camera.main.GetComponent<AudioSource>();
+        BGMSource.clip      = BGMcrip;
+        BGMSource.Play();
         DontDestroyOnLoad(this.gameObject);
         StartCoroutine(StartCountDown());
 
@@ -71,9 +78,29 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "MainGameScene")
         {
             Score = playerGameObj.transform.position.y;
-            if ((currentTime < (Time.time)) && isStarted)
+            if (isStarted)
             {
-                UpdateTime();
+
+                if ((currentTime < (Time.timeSinceLevelLoad)))
+                {
+                    UpdateTime();
+                }
+
+                if (!isAddTime)
+                {
+                    isAddTime = false; 
+
+                    if (((Mathf.FloorToInt(Score) % 100) == 0))
+                    {
+                        LifeTime += 10;
+                        isAddTime = true;
+                    }
+                }
+
+                if (((Mathf.FloorToInt(Score) % 100) != 0))
+                {
+                    isAddTime = false;
+                }
             }
 
             //TODO:リザルトへの遷移
@@ -106,9 +133,10 @@ public class GameManager : MonoBehaviour
             StartCountDownNum--;
         }
         isStarted = true;
-        gameStartTime = Time.time;
-        currentTime = Mathf.FloorToInt(Time.time);
+        currentTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
         playerMove.SetIsCanMove(true);
+        WorldItemCreater.instance.isCanCreate = true;
+
     }
 
     void OnDisable()
@@ -131,8 +159,32 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void OnPlayerDamaged()
     {
-        LifeTime -= 2;
-        StartCoroutine(PlayerManager.Instance.DamagedAnimCoroutine());
+        if(!isDamaged)
+        {
+            isDamaged = true;
+            LifeTime -= 2;
+            StartCoroutine(PlayerManager.Instance.DamagedAnimCoroutine());
+        }
+
+    }
+
+    public void DestroyBoostItem()
+    {
+        BoostItemCount = 0;
+    }
+
+    /// <summary>
+    /// 当たり判定を有効化
+    /// </summary>
+    public void OnEndDamageAnim()
+    {
+        isDamaged = false;
+    }
+
+    public void OnGetBoostItem()
+    {
+        BoostItemCount++;
+        UIMan.OnChengeBoostItemText(BoostItemCount.ToString());
     }
     #endregion
 
