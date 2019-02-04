@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-
+    [Header("CanvasObj")]
     [SerializeField]
-    Text ScoreText;
+    TextMeshProUGUI ScoreText;
     [SerializeField]
-    Text TimeText;
+    TextMeshProUGUI TimeText;
     [SerializeField]
-    Text FPSText;
+    TextMeshProUGUI FPSText;
     [SerializeField]
     GameObject StartCountDownPanel;
     [SerializeField]
     Button BoostButton;
     [SerializeField]
-    Text BoostItemText;
+    TextMeshProUGUI BoostItemText;
 
+    [Header("Debug")]
     [SerializeField]
     bool isDebugMode;
 
