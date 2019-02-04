@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
 
         TimeText.text = GameManager.instance.LifeTime.ToString();
 
-        if(!isDebugMode)
+        if(isDebugMode)
             DebugUpdate();
 
         if (PlayerMove.instance.GetIsBoosting() && !BoostButton.interactable)
