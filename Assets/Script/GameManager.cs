@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this.gameObject.GetComponent<GameManager>();
         }
+
         settings            = GameManagerSettings.instance;
         UIMan               = settings.UIManager;
         playerGameObj       = settings.PlayerGameObject;

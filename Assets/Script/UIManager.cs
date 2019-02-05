@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject StartCountDownPanel;
     [SerializeField]
+    TextMeshProUGUI CountDownText;
+    [SerializeField]
     Button BoostButton;
     [SerializeField]
     TextMeshProUGUI BoostItemText;
@@ -23,8 +25,6 @@ public class UIManager : MonoBehaviour
     [Header("Debug")]
     [SerializeField]
     bool isDebugMode;
-
-    int currentTime = 0;
 
     // Use this for initialization
     void Start()
@@ -46,8 +46,7 @@ public class UIManager : MonoBehaviour
 
         if (CountDownNum > 0)
         {
-            StartCountDownPanel.GetComponentInChildren<Text>().text = CountDownNum.ToString();
-            currentTime = 3;
+            CountDownText.text = CountDownNum.ToString();
         }
         else
         {
@@ -71,15 +70,15 @@ public class UIManager : MonoBehaviour
             BoostButton.interactable = true;
             
     }
+
     private void DebugUpdate()
     {
         FPSText.text = Mathf.Floor(1 / Time.deltaTime).ToString();
     }
 
-
     public void UIUpdate(int Score)
     {
-        ScoreText.text = Score + " m!";
+        ScoreText.text = Score + " m";
     }
 
     public void OnChengeBoostItemText(string value)
@@ -92,6 +91,4 @@ public class UIManager : MonoBehaviour
         BoostButton.interactable = false;
         PlayerMove.instance.startPlayerBoost(GameManager.instance.BoostItemCount);
     }
-
-
 }
