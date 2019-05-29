@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CharacterSelectManager : MonoBehaviour {
 	
@@ -27,8 +28,8 @@ public class CharacterSelectManager : MonoBehaviour {
         {
             GameObject obj = Instantiate(Resources.Load<GameObject>("Prefab/CharaSelectButton"), Content);
             obj.GetComponent<CharacterSelectButton>().CharactorNum = i;
-            obj.transform.GetChild(1).GetComponent<Image>().sprite = SelectTexture[i];
-            obj.transform.GetChild(0).GetComponent<Text>().text = CharactorName[i];
+            obj.transform.GetChild(0).GetComponent<Image>().sprite = SelectTexture[i];
+            obj.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = CharactorName[i];
 		}
         ChangeCharactorByIndex(0);
 	}

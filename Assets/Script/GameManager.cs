@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
     private int currentTime;
     private bool isAddTime;
     private bool isDamaged;
-    private AudioClip BGMcrip;
-    private AudioSource BGMSource;
 
     public bool isStarted        { get; protected set; }
     public int LifeTime          { get; protected set; }
@@ -34,21 +32,17 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
-        init();
-        if (UIMan == null)
-            Debug.LogError("UIMan is NotFound!");
-        MaxVertical = HorizontalDistance;
-        MinVerTical = -HorizontalDistance;
+        if (instance == null)
+        {
+            instance = this.gameObject.GetComponent<GameManager>();
+        }
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
     }
 
     void init()
     {
-        if (instance == null)
-        {
-            instance = this.gameObject.GetComponent<GameManager>();
-        }
+
         settings            = GameManagerSettings.instance;
         UIMan               = settings.UIManager;
         playerGameObj       = settings.PlayerGameObject;
@@ -56,18 +50,18 @@ public class GameManager : MonoBehaviour
         HorizontalDistance  = settings.HorizontalDistance;
         CharacterMat        = CharacterSelectManager.CharacterMat;
         Score               = 0;
+        BoostItemCount      = 0;
         StartCountDownNum   = 3;
         currentTime         = 0;
-        LifeTime            = 20;
+        LifeTime            = 30;
         isStarted           = false;
         isAddTime           = false;
-        BGMcrip             = (AudioClip) Resources.Load("music/omochanokuninomarch");
-        BGMSource           = Camera.main.GetComponent<AudioSource>();
-        BGMSource.clip      = BGMcrip;
-        BGMSource.Play();
+        MaxVertical         = HorizontalDistance;
+        MinVerTical         = -HorizontalDistance;
+        if (UIMan == null)
+            Debug.LogError("UIMan is NotFound!");
         DontDestroyOnLoad(this.gameObject);
         StartCoroutine(StartCountDown());
-
         PlayerManager.Instance.ChengePlayerMat();
     }
 
@@ -90,8 +84,9 @@ public class GameManager : MonoBehaviour
                 {
                     isAddTime = false; 
 
-                    if (((Mathf.FloorToInt(Score) % 100) == 0))
+                    if (((Mathf.FloorToInt(Score) % 100) == 0) && Mathf.FloorToInt(Score) != 0)
                     {
+                        GameSoundManager.instance.OnPlaySound((int)SoundName.AddTimeSE);
                         LifeTime += 10;
                         isAddTime = true;
                     }
@@ -103,11 +98,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            //TODO:リザルトへの遷移
-            if (LifeTime <= 0)
-            {
-                StartCoroutine(OnEndGame());
-            }
+
         }
     }
 
@@ -115,6 +106,11 @@ public class GameManager : MonoBehaviour
     {
         currentTime++;
         LifeTime--;
+
+        if (LifeTime <= 0)
+        {
+            StartCoroutine(OnEndGame());
+        }
     }
 
     IEnumerator OnEndGame()
@@ -127,10 +123,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartCountDown()
     {
-        for (int i = 3; i > 0; i--)
+        for (int i = 3; i >= 0; i--)
         {
-            yield return new WaitForSeconds(1.0f);
+            Debug.Log("StartCountDown =" + StartCountDownNum);
             StartCountDownNum--;
+            yield return new WaitForSeconds(1.0f);
         }
         isStarted = true;
         currentTime = Mathf.FloorToInt(Time.timeSinceLevelLoad);
@@ -161,6 +158,7 @@ public class GameManager : MonoBehaviour
     {
         if(!isDamaged)
         {
+            GameSoundManager.instance.OnPlaySound((int)SoundName.DamageSE);
             isDamaged = true;
             LifeTime -= 2;
             StartCoroutine(PlayerManager.Instance.DamagedAnimCoroutine());
@@ -183,6 +181,7 @@ public class GameManager : MonoBehaviour
 
     public void OnGetBoostItem()
     {
+        GameSoundManager.instance.OnPlaySound((int)SoundName.ItemSE);
         BoostItemCount++;
         UIMan.OnChengeBoostItemText(BoostItemCount.ToString());
     }

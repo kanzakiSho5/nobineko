@@ -7,6 +7,7 @@ public class WorldItemCreater : MonoBehaviour {
     GameObject ItemPearentObj;
     GameObject BoostPearent;
     GameObject DamagePearent;
+    GameObject CloudPearent;
 
     int BoostItemCount;
     int DamageItemCount;
@@ -36,6 +37,10 @@ public class WorldItemCreater : MonoBehaviour {
         BoostPearent.name = "BoostItem";
         BoostPearent.transform.parent = ItemPearentObj.transform;
 
+        CloudPearent = new GameObject();
+        CloudPearent.name = "Clouds";
+        CloudPearent.transform.parent = ItemPearentObj.transform;
+
         DamagePearent = new GameObject();
         DamagePearent.name = "DamageItem";
         DamagePearent.transform.parent = ItemPearentObj.transform;
@@ -59,6 +64,13 @@ public class WorldItemCreater : MonoBehaviour {
         Vector3 RespawnPos      = new Vector3((rand * 2 - 1) * (GameManager.instance.MaxVertical + 10), hight + 1, 0);
         item.transform.position = RespawnPos;
         item.GetComponent<DamagedItemScript>().Init();
+
+    }
+
+    void createCloudObj(float hight)
+    {
+        GameObject item = Instantiate((GameObject)Resources.Load("Prefab/CloudParticle"), CloudPearent.transform);
+        item.transform.position = new Vector3(Random.Range(-10, 10), hight + 10, 1);
     }
 
 	void Update () {
@@ -75,6 +87,8 @@ public class WorldItemCreater : MonoBehaviour {
                 {
                     BoostItemCount++;
                     createBoostObj(Mathf.FloorToInt(GameManager.instance.Score));
+                    if(GameManager.instance.Score > 100f)
+                        createCloudObj(Mathf.FloorToInt(GameManager.instance.Score));
                 }
 
                 if (Time.timeSinceLevelLoad >= DamageItemCount * 3)
@@ -91,6 +105,11 @@ public class WorldItemCreater : MonoBehaviour {
                 if (DamagePearent.transform.childCount > 5)
                 {
                     Destroy(DamagePearent.transform.GetChild(0).gameObject);
+                }
+
+                if(CloudPearent.transform.childCount > 5)
+                {
+                    Destroy(CloudPearent.transform.GetChild(0).gameObject);
                 }
             }
         }

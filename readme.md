@@ -11,3 +11,4 @@ Unityで作られたビルド前のファイルの為、Unityで開けば起動�
 - Standard Assets
   - Toon Shading
 - Ultra Skybox Fog
+- TextMeshPro

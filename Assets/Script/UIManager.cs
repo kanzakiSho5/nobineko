@@ -2,27 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-
+    [Header("CanvasObj")]
     [SerializeField]
-    Text ScoreText;
+    TextMeshProUGUI ScoreText;
     [SerializeField]
-    Text TimeText;
+    TextMeshProUGUI TimeText;
     [SerializeField]
-    Text FPSText;
+    TextMeshProUGUI FPSText;
     [SerializeField]
     GameObject StartCountDownPanel;
     [SerializeField]
+    TextMeshProUGUI CountDownText;
+    [SerializeField]
     Button BoostButton;
     [SerializeField]
-    Text BoostItemText;
+    TextMeshProUGUI BoostItemText;
 
+    [Header("Debug")]
     [SerializeField]
     bool isDebugMode;
-
-    int currentTime = 0;
 
     // Use this for initialization
     void Start()
@@ -44,8 +46,7 @@ public class UIManager : MonoBehaviour
 
         if (CountDownNum > 0)
         {
-            StartCountDownPanel.GetComponentInChildren<Text>().text = CountDownNum.ToString();
-            currentTime = 3;
+            CountDownText.text = CountDownNum.ToString();
         }
         else
         {
@@ -54,7 +55,7 @@ public class UIManager : MonoBehaviour
 
         TimeText.text = GameManager.instance.LifeTime.ToString();
 
-        if(!isDebugMode)
+        if(isDebugMode)
             DebugUpdate();
 
         if (PlayerMove.instance.GetIsBoosting() && !BoostButton.interactable)
@@ -69,15 +70,15 @@ public class UIManager : MonoBehaviour
             BoostButton.interactable = true;
             
     }
+
     private void DebugUpdate()
     {
         FPSText.text = Mathf.Floor(1 / Time.deltaTime).ToString();
     }
 
-
     public void UIUpdate(int Score)
     {
-        ScoreText.text = Score + " m!";
+        ScoreText.text = Score + " m";
     }
 
     public void OnChengeBoostItemText(string value)
@@ -90,6 +91,4 @@ public class UIManager : MonoBehaviour
         BoostButton.interactable = false;
         PlayerMove.instance.startPlayerBoost(GameManager.instance.BoostItemCount);
     }
-
-
 }
