@@ -19,6 +19,7 @@ public class CharacterSelectButton : MonoBehaviour {
 	}
 
     public void OnClickButton(){
+        MenuSoundManager.instance.OnPlaySound((int)SoundName.CatSE);
         manager.ChangeCharactorByIndex(CharactorNum);
         GameObject.FindWithTag("StartCanvas").GetComponent<StartSceneUIManager>().ToggleCharacterSelectAndStartSceneChenger();
     }
